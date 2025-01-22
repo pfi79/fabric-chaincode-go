@@ -80,6 +80,13 @@ type ChaincodeStubInterface interface {
 	// If the key does not exist in the state database, (nil, nil) is returned.
 	GetState(key string) ([]byte, error)
 
+	// GetStateMultipleKeys returns the values of the specified `keys` from the
+	// ledger. Note that GetStateMultipleKeys doesn't read data from the writeset, which
+	// has not been committed to the ledger. In other words, GetStateMultipleKeys doesn't
+	// consider data modified by PutState that has not been committed.
+	// If the keys do not exist in the state database, (nil, nil) is returned.
+	GetStateMultipleKeys(keys []string) ([][]byte, error)
+
 	// PutState puts the specified `key` and `value` into the transaction's
 	// writeset as a data-write proposal. PutState doesn't effect the ledger
 	// until the transaction is validated and successfully committed.
@@ -246,6 +253,13 @@ type ChaincodeStubInterface interface {
 	// other words, GetPrivateData doesn't consider data modified by PutPrivateData
 	// that has not been committed.
 	GetPrivateData(collection, key string) ([]byte, error)
+
+	// GetPrivateDataMultipleKeys returns the values of the specified `keys` from the specified
+	// `collection`. Note that GetPrivateDataMultipleKeys doesn't read data from the
+	// private writeset, which has not been committed to the `collection`. In
+	// other words, GetPrivateDataMultipleKeys doesn't consider data modified by PutPrivateData
+	// that has not been committed.
+	GetPrivateDataMultipleKeys(collection string, keys []string) ([][]byte, error)
 
 	// GetPrivateDataHash returns the hash of the value of the specified `key` from the specified
 	// `collection`
